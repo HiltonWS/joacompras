@@ -11,6 +11,10 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 
 	private EntityManager em;
 
+	/**
+	 * Persist as entidades
+	 * @param e entidade 
+	 */
 	public void insert(E... e) {
 		try {
 			em = EntityManagerProvider.getEntityManagerFactory()
@@ -32,6 +36,10 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 
 	}
 
+	/**
+	 * Merge as entidades
+	 * @param e entidade
+	 */
 	public void update(E... e) {
 		try {
 			em = EntityManagerProvider.getEntityManagerFactory()
@@ -52,6 +60,10 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		}
 	}
 
+	/**
+	 * Verifica se o item existe e o remove
+	 * @param e entidade
+	 */
 	public void delete(E... e) {
 		try {
 			em = EntityManagerProvider.getEntityManagerFactory()
@@ -75,6 +87,12 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		}
 	}
 
+	/**
+	 * Busca a entidade
+	 * @param id da entidade
+	 * @param clazz classe da entidade
+	 * @return entidade
+	 */
 	public E buscarPorId(Object id, Class<E> clazz) {
 		em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();
@@ -89,6 +107,11 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		return e;
 	}
 
+	/**
+	 * Lista todas as entidades
+	 * @param c classe da entidade
+	 * @return Lista de entidades
+	 */
 	public List<E> listaTodos(Class<?> c) {
 		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();
@@ -102,6 +125,11 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		return resultado;
 	}
 
+	/**
+	 * Id maxima da entidade
+	 * @param c Classe da entidade
+	 * @return id
+	 */
 	public Long getMaxId(Class<?> c) {
 		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();
@@ -114,6 +142,11 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		return resultado;
 	}
 
+	/**
+	 * Persist as entidades
+	 * @param msgConfirm ha mensagem de confirmacao true/false
+	 * @param e entidade
+	 */
 	public void insert(Boolean msgConfirm, E... e) { // mehtodo com parametro de
 														// confirmacaum
 		try {
@@ -139,6 +172,11 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		}
 	}
 
+	/**
+	 * Merge as entidades
+	 * @param msgConfirm ha mensagem de confirmacao true/false
+	 * @param e entidade
+	 */
 	public void update(Boolean msgConfirm, E... e) { // mehtodo com parametro de
 														// confirmacaum
 		try {
@@ -165,6 +203,11 @@ public class CrudDAO<E> { // o <E> significa que essa classe génerica(Generics)
 		}
 	}
 
+	/**
+	 * Deleta as entidades
+	 * @param msgConfirm ha mensagem de confirmacao true/false
+	 * @param e
+	 */
 	public void delete(Boolean msgConfirm, E... e) {
 		try {
 			em = EntityManagerProvider.getEntityManagerFactory()

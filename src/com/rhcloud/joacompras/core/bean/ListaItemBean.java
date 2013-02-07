@@ -10,13 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * @author Hilton Wichwski Silva
+ *
+ */
 @Entity
 @Table(name="LISTA_ITEM")
 public class ListaItemBean implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -34,38 +35,65 @@ public class ListaItemBean implements Serializable{
 	private Integer quantidade;
 	
 
+	/**
+	 * @return id
+	 */
 	public Long getId() {
 		return id;
 	}
 	
+	/**
+	 * @param id
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 	
+	/**
+	 * @return lista
+	 */
 	public ListaBean getLista() {
 		return lista;
 	}
 	
+	/**
+	 * @param lista
+	 */
 	public void setLista(ListaBean lista) {
 		this.lista = lista;
 	}
 	
+	/**
+	 * @return item
+	 */
 	public ItemBean getItem() {
 		return item;
 	}
 	
+	/**
+	 * @param item
+	 */
 	public void setItem(ItemBean item) {
 		this.item = item;
 	}
 	
+	/**
+	 * @return quantidade
+	 */
 	public Integer getQuantidade() {
 		return quantidade;
 	}
 	
+	/**
+	 * @param quantidade
+	 */
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -75,6 +103,9 @@ public class ListaItemBean implements Serializable{
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)

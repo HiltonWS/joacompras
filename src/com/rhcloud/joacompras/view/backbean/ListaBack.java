@@ -33,7 +33,6 @@ public class ListaBack implements Serializable {
 	private List<ItemBean> litemAd;
 	private List<ItemBean> remover;
 	private boolean selecionar;
-	private String style;
 	private transient HtmlDataTable dataTable;
 	private transient HtmlDataTable dataTableAd;
 
@@ -41,6 +40,9 @@ public class ListaBack implements Serializable {
 		limpar();
 	}
 
+	/**
+	 * Salva o bean
+	 */
 	public void salvar() {
 		ListaDAO dao = new ListaDAO();
 		if (selecionar)
@@ -69,12 +71,19 @@ public class ListaBack implements Serializable {
 
 	}
 
+	/**
+	 * Excluir a lista
+	 * @param b lista recebida pela pagina
+	 */
 	public void excluir(ListaBean b) {
 		new ListaDAO().delete(b);
 
 		limpar();
 	}
 
+	/**
+	 * Limpa os valores
+	 */
 	public void limpar() {
 		setSelecionar(false);
 		remover = new ArrayList<ItemBean>();
@@ -89,6 +98,10 @@ public class ListaBack implements Serializable {
 		
 	}
 
+	/**
+	 * Adiciona Quantidade/item a lista ltemAD
+	 * @param b Item a ser adicionado da pagina
+	 */
 	public void adicionar(ItemBean b) {
 		if (!litemAd.contains(b)) {
 			b.setTempQtd(1);
@@ -102,6 +115,10 @@ public class ListaBack implements Serializable {
 
 	}
 
+	/**
+	 * Remove a quantidade do item ate ser 0
+	 * @param b Item a ser removido da pagina
+	 */
 	public void remover(ItemBean b) {
 		b.setTempQtd(b.getTempQtd() - 1);
 		if (b.getTempQtd() <= 0) {
@@ -110,45 +127,70 @@ public class ListaBack implements Serializable {
 		}
 	}
 
+	/**
+	 * Lista os itens buscando pela lista selecionada
+	 */
 	public void listaItens() {
 		setRender(false);
 		litemAd = new ListaItemDAO().buscarItens((ListaBean) dataTable
 				.getRowData());
 	}
 
+	/**
+	 * Selecionar/Alterar lista
+	 * @param b Lista selecionada da pagina
+	 */
 	public void selecionar(ListaBean b) {
 		setSelecionar(true);
 		bean = b;
 		litemAd = new ListaItemDAO().buscarItens(bean);
 	}
 
+	/**
+	 * @return
+	 */
 	public ListaBean getBean() {
 		return bean;
 	}
 
+	/**
+	 * @param bean
+	 */
 	public void setBean(ListaBean bean) {
 		this.bean = bean;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<ListaBean> getLbean() {
-
 		return lbean;
 	}
 
+	/**
+	 * @param lbean
+	 */
 	public void setLbean(List<ListaBean> lbean) {
 		this.lbean = lbean;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<ItemBean> getLitem() {
 		return litem;
 	}
 
+	/**
+	 * @param litem
+	 */
 	public void setLitem(List<ItemBean> litem) {
-
 		this.litem = litem;
-
 	}
 
+	/**
+	 * Se comprou exclui o item da lista
+	 */
 	public void comprou() {
 		ItemBean b = (ItemBean) dataTableAd.getRowData();
 		if (litemAd.contains(b)) {
@@ -159,6 +201,9 @@ public class ListaBack implements Serializable {
 		}
 	}
 
+	/**
+	 * @return o valor total de cada item na lista
+	 */
 	public double getTotalAd() {
 		double d = 0;
 		for (ItemBean b : litemAd) {
@@ -169,52 +214,76 @@ public class ListaBack implements Serializable {
 	}
 
 	
+	/**
+	 * @return
+	 */
 	public HtmlDataTable getDataTable() {
 		return dataTable;
 	}
 
+	/**
+	 * @param dataTable
+	 */
 	public void setDataTable(HtmlDataTable dataTable) {
 		this.dataTable = dataTable;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<ItemBean> getLitemAd() {
 		return litemAd;
 	}
 
+	/**
+	 * @param litemAd
+	 */
 	public void setLitemAd(List<ItemBean> litemAd) {
 		this.litemAd = litemAd;
 	}
 
+	/**
+	 * @return
+	 */
 	public HtmlDataTable getDataTableAd() {
 		return dataTableAd;
 	}
 
+	/**
+	 * @param dataTableAd
+	 */
 	public void setDataTableAd(HtmlDataTable dataTableAd) {
 		this.dataTableAd = dataTableAd;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isRender() {
 		return render;
 	}
 
+	/**
+	 * Renderizar lista ou item
+	 * @param render
+	 */
 	public void setRender(boolean render) {
 		this.render = render;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isSelecionar() {
 		return selecionar;
 	}
 
+	/**
+	 * @param selecionar
+	 */
 	public void setSelecionar(boolean selecionar) {
 		this.selecionar = selecionar;
 	}
 
-	public String getStyle() {
-		return style;
-	}
-
-	public void setStyle(String style) {
-		this.style = style;
-	}
 
 }

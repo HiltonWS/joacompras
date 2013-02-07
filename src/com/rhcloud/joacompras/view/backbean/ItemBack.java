@@ -17,6 +17,10 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
 import com.rhcloud.joacompras.core.bean.ItemBean;
 import com.rhcloud.joacompras.core.dao.ItemDAO;
 
+/**
+ * @author Hilton Wichwski Silva
+ *
+ */
 @ManagedBean
 @RequestScoped
 public class ItemBack implements Serializable {
@@ -34,6 +38,9 @@ public class ItemBack implements Serializable {
 		limpar();
 	}
 
+	/**
+	 * Salva o bean
+	 */
 	public void salvar() {
 		if (selecionar) {
 			new ItemDAO().update(getBean());
@@ -43,14 +50,24 @@ public class ItemBack implements Serializable {
 		limpar();
 	}
 
+	/**
+	 * @return True se esta no modo selecionar/alterar, False se nao esta
+	 */
 	public boolean isSelecionar() {
 		return selecionar;
 	}
 
+	/**
+	 * @param selecionar
+	 */
 	public void setSelecionar(boolean selecionar) {
 		this.selecionar = selecionar;
 	}
 
+	/**
+	 * Exclui o bean
+	 * @param b Bean recebido pela pagina
+	 */
 	public void excluir(ItemBean b) {
 		lbean.remove(lbean.indexOf(b));
 		new ItemDAO().delete(b);
@@ -66,6 +83,10 @@ public class ItemBack implements Serializable {
 
 	}
 
+	/**
+	 * Seleciona o bean e o carrega
+	 * @param b bean recebido pela pagina
+	 */
 	public void selecionar(ItemBean b) {
 		selecionar = true;
 		bean = b;
@@ -79,6 +100,9 @@ public class ItemBack implements Serializable {
 		context.renderResponse();
 	}
 
+	/**
+	 * Limpar os valores
+	 */
 	public void limpar() {
 		setLbean(new ArrayList<ItemBean>());
 		lbean = new ItemDAO().listaTodos(ItemBean.class);
@@ -86,27 +110,45 @@ public class ItemBack implements Serializable {
 		selecionar = false;
 	}
 
+	/**
+	 * @return
+	 */
 	public ItemBean getBean() {
 		return bean;
 	}
 
+	/**
+	 * @param bean
+	 */
 	public void setBean(ItemBean bean) {
 		this.bean = bean;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<ItemBean> getLbean() {
 		lbean = new ItemDAO().listaTodos(ItemBean.class);
 		return lbean;
 	}
 
+	/**
+	 * @param lbean
+	 */
 	public void setLbean(List<ItemBean> lbean) {
 		this.lbean = lbean;
 	}
 
+	/**
+	 * @return
+	 */
 	public UploadedFile getUploaded() {
 		return uploaded;
 	}
 
+	/**
+	 * @param uploaded
+	 */
 	public void setUploaded(UploadedFile uploaded) {
 		if (uploaded != null) {
 			try {

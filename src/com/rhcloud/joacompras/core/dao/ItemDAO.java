@@ -9,10 +9,17 @@ import com.rhcloud.joacompras.core.dao.connection.EntityManagerProvider;
 import com.rhcloud.joacompras.core.dao.crud.CrudDAO;
 import com.rhcloud.joacompras.core.util.Messages;
 
+/**
+ * @author Hilton Wichwski Silva
+ *
+ */
 public class ItemDAO extends CrudDAO<ItemBean>{
 //******Update personalizado não é chamado Retirado******/
 
-	public void delete(ItemBean e) {
+	/* (non-Javadoc)
+	 * @see com.rhcloud.joacompras.core.dao.crud.CrudDAO#delete(java.lang.Object[])
+	 */
+	public void delete(ItemBean... e) {
 		try {
 			EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 					.createEntityManager();
@@ -20,7 +27,7 @@ public class ItemDAO extends CrudDAO<ItemBean>{
 
 			StringBuilder s = new StringBuilder();
 			s.append("DELETE ItemBean");
-			s.append(" WHERE id =" + e.getId());
+			s.append(" WHERE id =" + e[0].getId());
 
 			Query q = em.createQuery(s.toString());
 			q.executeUpdate();
@@ -33,6 +40,9 @@ public class ItemDAO extends CrudDAO<ItemBean>{
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.rhcloud.joacompras.core.dao.crud.CrudDAO#insert(java.lang.Object[])
+	 */
 	public void insert(ItemBean... e) {
 		super.update(e);
 	}

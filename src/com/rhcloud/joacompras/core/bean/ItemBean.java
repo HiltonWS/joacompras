@@ -11,13 +11,15 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.rhcloud.joacompras.core.dao.ItemDAO;
+/**
+ * @author Hilton Wichwski Silva
+ *
+ */
 @Entity
 @Table(name="ITEM")
 public class ItemBean implements Serializable{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -41,44 +43,77 @@ public class ItemBean implements Serializable{
 	private Integer tempQtd;
    
 
+	/**
+	 * @return id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * @return nome
+	 */
 	public String getNome() {
 		return nome;
 	}
 
+	/**
+	 * @param nome
+	 */
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
+	/**
+	 * @return valor
+	 */
 	public Double getValor() {
 		return valor;
 	}
 
+	/**
+	 * @param valor
+	 */
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
 
+	/**
+	 * 
+	 * @return tempQtd quantidade temporária da lista
+	 */
 	public Integer getTempQtd() {
 		return tempQtd;
 	}
 
+	/**
+	 * 
+	 * @param tempQtd quantidade temporária da lista
+	 */
 	public void setTempQtd(Integer tempQtd) {
 		this.tempQtd = tempQtd;
 	}
 
+	/**
+	 * @return imagem
+	 * @see image/*
+	 */
 	public byte[] getImagem() {
 		
 		return imagem;
 	}
 
+	/**
+	 * @param imagem
+	 */
 	public void setImagem(byte[] imagem) {
 		this.imagem = imagem;
 	}
 
 	 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	public boolean equals(Object o){
 	    if (o instanceof ItemBean){
 	        ItemBean temp = (ItemBean)o;

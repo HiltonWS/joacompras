@@ -1,0 +1,1 @@
+jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h1><img src="../image/loading.gif" /> Aguarde...</h1>' })).ajaxStop(jQuery.unblockUI);

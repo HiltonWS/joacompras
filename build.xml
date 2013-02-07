@@ -1,97 +1,99 @@
- <project name="joaocompras" basedir="." default="deploy">
+<project name="joaocompras" basedir="." default="deploy">
 
-	<property file= "build.properties"/>
-	
-		<target name="apagar">
-			<delete dir="${deploy.dir}/${war.name}" />
-			<delete dir="${build.dir}/com/*" />
-			<delete dir="${build.dir}/com/" />
-			<delete file="${deploy.dir}/${war.name}.war" />
-			<echo message="Apagado" />
-		</target>
-		
-		<path id="lib.path">
-			<fileset dir="${lib.dir}">
-				<include name="**/*"/>
-			</fileset>
-		</path>
-		
-		<target name="compila">
-			<!--Aqui irá compilar o código fonte que está no diretório src-->
-			<javac srcdir="${src.dir}" debug="true" destdir="${build.dir}" includeantruntime="true">
-				<classpath>
-					<path refid="lib.path"/>
-				</classpath>
-			</javac> 
-			<echo message="Compilado" />
-		</target>
-		
-		<target name="criar.war" depends="compila">
-			<war destfile="${dist.dir}/${war.name}.war">
-				<classes dir="${build.dir}">
-					<include name="**/*"/>								
-				</classes>
-					
-				<!---->
-				<!--<lib dir="${lib.dir}">
+	<property file="build.properties" />
+
+	<target name="apagar">
+		<delete dir="${deploy.dir}/${war.name}" />
+		<delete dir="${build.dir}/com/*" />
+		<delete dir="${build.dir}/com/" />
+		<delete file="${deploy.dir}/${war.name}.war" />
+		<echo message="Apagado" />
+	</target>
+
+	<path id="lib.path">
+		<fileset dir="${lib.dir}">
+			<include name="**/*" />
+		</fileset>
+	</path>
+
+	<target name="compila">
+		<!--Aqui irá compilar o código fonte que está no diretório src-->
+		<javac srcdir="${src.dir}" debug="true" destdir="${build.dir}" includeantruntime="true">
+			<classpath>
+				<path refid="lib.path" />
+			</classpath>
+		</javac>
+		<echo message="Compilado" />
+	</target>
+
+	<target name="criar.war" depends="compila">
+		<war destfile="${dist.dir}/${war.name}.war">
+			<classes dir="${build.dir}">
+				<include name="**/*" />
+			</classes>
+
+			<!---->
+			<!--<lib dir="${lib.dir}">
 					<include name="**/*"/>
 					<exclude name="**/*servlet*"/>
 				</lib>-->
-							
-				<webinf dir="${web.xml.dir}">
-					<include name="**/*"/>				
-				</webinf>
-				
-				<fileset dir="${view.dir}">
-					<include name="**/*"/>
-				</fileset>
-			</war>
-			<echo message="Criou o .war" />
-		</target>
- 		<target name="tomcat-start">
- 			<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
- 			            <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
 
- 			            <jvmarg value="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager" />
- 			   <jvmarg value="-Djava.util.logging.config.file=${tomcat.home}/conf/logging.properties" />
+			<webinf dir="${web.xml.dir}">
+				<include name="**/*" />
+			</webinf>
 
- 			            <jvmarg value="-Dcatalina.home=${tomcat.home}" />
- 			            <jvmarg value="-Dcatalina.base=${tomcat.home}" />
+			<fileset dir="${view.dir}">
+				<include name="**/*" />
+			</fileset>
+		</war>
+		<echo message="Criou o .war" />
+	</target>
+	<target name="tomcat-start">
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
 
- 			            <jvmarg value="-Djava.io.tmpdir=${tomcat.home}/temp" />
+			<jvmarg value="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager" />
+			<jvmarg value="-Djava.util.logging.config.file=${tomcat.home}/conf/logging.properties" />
 
- 			   <arg line="start" />
- 			  </java>
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
+			<jvmarg value="-Dcatalina.base=${tomcat.home}" />
 
- 			<echo message="Iniciou tomcat em ${tomcat.home}" />
- 			
- 		</target>
+			<jvmarg value="-Djava.io.tmpdir=${tomcat.home}/temp" />
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n" />
 
- 		<target name="tomcat-stop">
- 			<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
- 			   <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
- 			            <jvmarg value="-Dcatalina.home=${tomcat.home}" />
+			<arg line="start" />
+		</java>
 
- 			   <arg line="stop" />
- 			  </java>
- 			<echo message="Parou tomcat em ${tomcat.home}" />
- 		</target>
+		<echo message="Iniciou tomcat em ${tomcat.home}" />
 
-		<target name ="copy-delete">
-			<!-- build e dist são temporários, por isso que o arquivo é copiado
+	</target>
+
+	<target name="tomcat-stop">
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
+
+			<arg line="stop" />
+		</java>
+		<echo message="Parou tomcat em ${tomcat.home}" />
+	</target>
+
+	<target name="copy-delete">
+		<!-- build e dist são temporários, por isso que o arquivo é copiado
 						     para o diretório deploy.dir-->
-			<copy file="${dist.dir}/${war.name}.war" todir="${deploy.dir}" overwrite="true" />
-			<echo>Arquivos copiados para: ${deploy.dir}</echo>
-			<delete file="${dist.dir}/${war.name}.war" />
-			<echo>War deletado.</echo>
-			<delete dir="${build.dir}/com/" />
-			<echo>Conteudo apagado: ${build.dir}/</echo>
-			
-	    </target>
-		
-		<target name="deploy" depends="tomcat-stop, criar.war, apagar, copy-delete, tomcat-start"/>
- 	
- 	<!--target name="tomcat-start-debug">
+		<copy file="${dist.dir}/${war.name}.war" todir="${deploy.dir}" overwrite="true" />
+		<echo>Arquivos copiados para: ${deploy.dir}</echo>
+		<delete file="${dist.dir}/${war.name}.war" />
+		<echo>War deletado.</echo>
+		<delete dir="${build.dir}/com/" />
+		<echo>Conteudo apagado: ${build.dir}/</echo>
+
+	</target>
+
+	<target name="deploy" depends="tomcat-stop, criar.war, apagar, copy-delete, tomcat-start" />
+
+	<!--target name="tomcat-start-debug">
  	    <java jar="${tomcat.home}/bin/bootstrap.jar" fork="true">
  	        <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
  	        <jvmarg value="-Xdebug"/>

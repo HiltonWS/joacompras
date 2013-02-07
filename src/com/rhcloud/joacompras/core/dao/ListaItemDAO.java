@@ -13,54 +13,50 @@ import com.rhcloud.joacompras.core.bean.ListaBean;
 import com.rhcloud.joacompras.core.bean.ListaItemBean;
 import com.rhcloud.joacompras.core.dao.connection.EntityManagerProvider;
 import com.rhcloud.joacompras.core.dao.crud.CrudDAO;
+import com.rhcloud.joacompras.core.util.Messages;
 
 public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 
 	public void update(ListaItemBean e) {
+		try {
 
-		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
-				.createEntityManager();
+			EntityManager em = EntityManagerProvider.getEntityManagerFactory()
+					.createEntityManager();
 
-		em.getTransaction().begin();
-		Query q = em.createQuery("from ListaItemBean where  item = :iId  and lista = :lId");
-		q.setParameter("iId", e.getItem());
-		q.setParameter("lId", e.getLista());
-		if(q.getResultList().isEmpty()){
-			em.persist(e);
-		}else{
-			q = em.createQuery("update ListaItemBean set quantidade = :qtd where  item = :iId  and lista = :lId");
+			em.getTransaction().begin();
+			Query q = em
+					.createQuery("update ListaItemBean set quantidade = :qtd where  item = :iId  and lista = :lId");
 			q.setParameter("iId", e.getItem());
 			q.setParameter("lId", e.getLista());
 			q.setParameter("qtd", e.getQuantidade());
-			
+			em.merge(e.getLista());
 			q.executeUpdate();
+			
+			em.getTransaction().commit();
+
+			em.close();
+			new Messages().addInfo("Salvo com sucesso!");
+		} catch (Exception y) {
+			new Messages().addError("Erro o salvar!");
 		}
-		
-		em.getTransaction().commit();
-
-		em.close();
-
 	}
 
 	public void delete(ListaItemBean e) {
-
 		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();
 
 		em.getTransaction().begin();
-		Query  q = em.createQuery("delete ListaItemBean where  item = :iId  and lista = :lId");
+		Query q = em
+				.createQuery("delete ListaItemBean where  item = :iId  and lista = :lId");
 		q.setParameter("iId", e.getItem());
 		q.setParameter("lId", e.getLista());
-		new ListaDAO().delete(e.getLista());
 		q.executeUpdate();
-		
-		
+
 		em.getTransaction().commit();
 
 		em.close();
-		new ListaDAO().delete(e.getLista());
-
 	}
+
 	public List<ItemBean> buscarItens(ListaBean bean) {
 		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();

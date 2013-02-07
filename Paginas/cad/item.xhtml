@@ -118,8 +118,13 @@ xmlns="http://www.w3.org/1999/xhtml"
 							</div>
 							<h:outputLabel class="control-label" value="Imagem" />
 							<div class="controls">
-								<t:inputFileUpload accept="image/*" id="fileupload"
-									value="#{itemBack.uploaded}" />
+								<t:inputFileUpload rendered="#{not itemBack.isSelecionar()}"
+									accept="image/*" value="#{itemBack.uploaded}" />
+									
+									<h:graphicImage rendered="#{itemBack.isSelecionar()}" value="../imgitem?id=#{itemBack.bean.id}" />
+									<br />
+								<h:outputText rendered="#{itemBack.isSelecionar()}"
+									value="A imagem não pode ser alterada. Para isso exclua e salve um novo item" />
 							</div>
 						</h:panelGroup>
 						<br />
@@ -155,14 +160,16 @@ xmlns="http://www.w3.org/1999/xhtml"
 									</h:outputText>
 								</h:column>
 								<h:column>
-									<h:commandLink immediate = "true" class="btn btn-warning btn-block"
+									<h:commandLink immediate="true"
+										class="btn btn-warning btn-block"
 										action="#{itemBack.selecionar(item)}">
 										<i class="icon-check icon-white"></i>
 										Alterar
 									</h:commandLink>
 								</h:column>
 								<h:column>
-									<h:commandLink immediate="true" class="btn btn-danger btn-block"
+									<h:commandLink immediate="true"
+										class="btn btn-danger btn-block"
 										action="#{itemBack.excluir(item)}">
 										<i class="icon-remove icon-white"></i> 
 								Excluir
@@ -178,7 +185,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 						</ui:fragment>
 						<h:panelGroup id="botoes" class="control-group">
 							<h:commandLink class="btn btn-success"
-								action="#{itemBack.salvar()}">
+								action="#{itemBack.salvar}">
 								<i class="icon-ok icon-white"></i> 
 								Salvar
 							</h:commandLink>

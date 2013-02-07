@@ -8,9 +8,6 @@
 	<persistence-unit name="joacomprasPU"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		
-
-		
 
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:mysql://127.10.151.1:3306/joacompras" />

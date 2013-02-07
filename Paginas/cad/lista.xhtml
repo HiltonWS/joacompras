@@ -70,98 +70,109 @@ xmlns="http://www.w3.org/1999/xhtml"
 		<div class="hero-unit">
 			                
 			<h1>Cadastro de Listas</h1>
-			                <br />                 
-			<p>
-				<span class="ajaxResult" id="dateIndicator"
-					style="display: none; font-size: 60%"> <img
-					src="../images/loading.gif" /> Carregando dados do servidor...
-				</span>
-				<h:form id="form">
+			                <br />    
+			<h:messages errorClass="alert alert-error"
+				infoClass="alert alert-info" warnClass="alert" />
+			<h:form class="form-horizontal" id="form">
 
+				<h:panelGrid column="2">
+					<h:panelGroup class="control-group">
+						<h:outputLabel class="control-label" required="true"
+							value="Nome: " />
+						<div class="controls">
+							<h:inputText required="true"
+								requiredMessage="Campo nome obrigatório!"
+								value="#{listaBack.bean.nome}" />
+						</div>
+					</h:panelGroup>
+					<h:panelGroup class="control-group">
+						<h2>Itens da lista</h2>
 
-					<h:outputText value="Nome: " />
-					<h:inputText value="#{listaBack.bean.nome}" />
+						<ui:fragment rendered="#{not not empty listaBack.litemAd}">
+							<h:outputText
+								value="Não há itens na lista. Adicione um item da lista abaixo." />
+							<br />
+						</ui:fragment>
 
-					<h2>Itens da lista</h2>
+						<h:panelGroup id="itens">
+							<h:dataTable rendered="#{not empty listaBack.litemAd}"
+								class="dataTable table table-striped table-border"
+								value="#{listaBack.litemAd}" var="item"
+								binding="#{listaBack.dataTableAd}">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Código" />
+									</f:facet>
+									<h:outputText value="#{item.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Imagem" />
+									</f:facet>
+									<h:graphicImage value="../imgitem?id=#{item.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Nome" />
+									</f:facet>
+									<h:outputText value="#{item.nome}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Valor unitário" />
+									</f:facet>
+									<h:outputText value="R$ #{item.valor}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</h:column>
 
-					<ui:fragment rendered="#{not not empty listaBack.litemAd}">
-						<h:outputText
-							value="Não há itens na lista. Adicione um item da lista abaixo." />
-						<br />
-					</ui:fragment>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Quantidade" />
+									</f:facet>
+									<h:inputText
+										onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+									    onkeyup="if(this.value == '0'){this.value = '1'}"
+										value="#{item.tempQtd}">
+									</h:inputText>
 
-					<h:panelGroup id="itens">
-						<h:dataTable rendered="#{not empty listaBack.litemAd}"
-							class="dataTable table table-striped table-border"
-							value="#{listaBack.litemAd}" var="item"
-							binding="#{listaBack.dataTableAd}">
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Código" />
-								</f:facet>
-								<h:outputText value="#{item.id}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Imagem" />
-								</f:facet>
-								<h:graphicImage value="../imgitem?id=#{item.id}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Nome" />
-								</f:facet>
-								<h:outputText value="#{item.nome}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Valor unitário" />
-								</f:facet>
-								<h:outputText value="R$ #{item.valor}">
-									<f:convertNumber type="currency" />
-								</h:outputText>
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Quantidade" />
-								</f:facet>
-								<h:outputText value="#{item.tempQtd}" />
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Valor" />
-								</f:facet>
-								<h:outputText value="R$ #{item.valor * item.tempQtd}">
-									<f:convertNumber type="currency" />
-								</h:outputText>
-							</h:column>
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value=" " />
-								</f:facet>
-								<h:commandLink class="btn btn-primary btn-block"
-									action="#{listaBack.remover(item)}">
-									<f:ajax event="click" render="form:itens" />
-									<i class="icon-remove icon-white" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Valor" />
+									</f:facet>
+									<h:outputText value="R$ #{item.valor * item.tempQtd}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value=" " />
+									</f:facet>
+									<h:commandLink immediate="true"
+										class="btn btn-primary btn-block"
+										action="#{listaBack.remover(item)}">
+										<f:ajax event="click" render="form:itens" />
+										<i class="icon-remove icon-white" />
 									Remover
 								</h:commandLink>
-							</h:column>
-						</h:dataTable>
+								</h:column>
+							</h:dataTable>
 
-						<h:panelGrid rendered="#{not not empty listaBack.litemAd}"
-							column="1">
+							<h:panelGrid rendered="#{not empty listaBack.litemAd}" column="1">
 
-							<h:column>
-								<f:facet name="header">
-									<h:outputText value="Valor" />
-								</f:facet>
-								<h:outputText value="R$ #{listaBack.totalAd}">
-									<f:convertNumber type="currency" />
-								</h:outputText>
-							</h:column>
-						</h:panelGrid>
-
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Valor" />
+									</f:facet>
+									<h:outputText value="R$ #{listaBack.totalAd}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</h:column>
+							</h:panelGrid>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup class="control-group">
 						<h2>Adicionar à lista</h2>
 						<ui:fragment rendered="#{not not empty listaBack.litem}">
 							<h:outputText
@@ -169,7 +180,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 							<br />
 						</ui:fragment>
 						<h:dataTable rendered="#{not empty listaBack.litem}"
-							class="dataTable table table-striped table-bordered"
+							class="_dataTable table table-striped table-bordered"
 							value="#{listaBack.litem}" var="item"
 							binding="#{listaBack.dataTable}">
 							<h:column>
@@ -203,8 +214,9 @@ xmlns="http://www.w3.org/1999/xhtml"
 									<h:outputText value=" " />
 								</f:facet>
 
-								<h:commandLink class="btn btn-primary btn-block"
-									data-toggle="button" action="#{listaBack.adicionar(item)}">
+								<h:commandLink immediate="true"
+									class="btn btn-primary btn-block" data-toggle="button"
+									action="#{listaBack.adicionar(item)}">
 									<f:ajax event="click" render="form:itens" />
 									<i class="icon-check icon-white" />
 									Adicionar
@@ -212,14 +224,16 @@ xmlns="http://www.w3.org/1999/xhtml"
 							</h:column>
 
 						</h:dataTable>
-						<ui:fragment rendered="#{not not empty listaBack.litemAd}">
+					</h:panelGroup>
+					<h:panelGroup class="control-group">
+						<ui:fragment rendered="#{not not empty listaBack.lbean}">
 							<h:outputText
-								value="Não há lista. Preencha os dados acima e adicione um item." />
+								value="Não há lista. Preencha os dados acima e adicione uma lista." />
 							<br />
 						</ui:fragment>
 
 						<h:dataTable rendered="#{not empty listaBack.lbean}"
-							class="dataTable table table-striped table-bordered"
+							class="_dataTable table table-striped table-bordered"
 							value="#{listaBack.lbean}" var="lista">
 							<h:column>
 								<f:facet name="header">
@@ -234,34 +248,37 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<h:outputText value="#{lista.nome}" />
 							</h:column>
 							<h:column>
-								<h:commandLink class="btn btn-block btn-warning"
+								<h:commandLink immediate="true"
+									class="btn btn-block btn-warning"
 									action="#{listaBack.selecionar(lista)}">
 									<i class="icon-check icon-white"></i>
 									Alterar
 									<f:ajax event="click" render="@form" />
 								</h:commandLink>
-								<h:column>
-									<h:commandLink class="btn btn-block btn-danger"
-										action="#{listaBack.excluir(lista)}">
-										<i class="icon-remove icon-white"></i>
-										Excluir
+							</h:column>
+							<h:column>
+								<h:commandLink immediate="true" class="btn btn-block btn-danger"
+									action="#{listaBack.excluir(lista)}">
+									<i class="icon-remove icon-white"></i>
+											Excluir
 										<f:ajax event="click" render="@form" />
-									</h:commandLink>
-								</h:column>
-
+								</h:commandLink>
 							</h:column>
 						</h:dataTable>
 					</h:panelGroup>
+
 					<br />
+					<h:panelGroup class="control-group">
 
-					<h:commandLink class="btn btn-success" action="#{listaBack.salvar}">
-						<i class="icon-ok  icon-white"></i>
-						Salvar
-						<f:ajax render="@form" execute="@form" />
-					</h:commandLink>
-
-				</h:form>
-			</p>
+						<h:commandLink class="btn btn-success"
+							action="#{listaBack.salvar}">
+							<i class="icon-ok  icon-white"></i>
+								Salvar
+								<f:ajax render="@form" execute="@form" />
+						</h:commandLink>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
 			            
 		</div>
 
@@ -271,5 +288,10 @@ xmlns="http://www.w3.org/1999/xhtml"
 </body>
 
 
+<script>
+	jQuery('.numbers').keyup(function() {
+		this.value = this.value.replace("/[^0-9\.]/g", "");
+	});
+</script>
 
 </html>

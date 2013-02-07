@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.rhcloud.joacompras.core.dao.ItemDAO;
 @Entity
 @Table(name="ITEM")
 public class ItemBean implements Serializable{
@@ -32,7 +34,7 @@ public class ItemBean implements Serializable{
     @Column(name="VL_ITEM", nullable = false)
     private Double valor;
     
-    @Column(name="IMAGEM", nullable = true, length=65515)
+    @Column(name="IMAGEM", columnDefinition="mediumblob", updatable= false)
     private byte[] imagem;
     
 	@Transient
@@ -68,11 +70,11 @@ public class ItemBean implements Serializable{
 	}
 
 	public byte[] getImagem() {
+		
 		return imagem;
 	}
 
 	public void setImagem(byte[] imagem) {
-		
 		this.imagem = imagem;
 	}
 

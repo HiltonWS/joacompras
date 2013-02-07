@@ -1,6 +1,7 @@
 package com.rhcloud.joacompras.view.backbean;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,12 @@ import com.rhcloud.joacompras.core.dao.ItemDAO;
 
 @ManagedBean
 @RequestScoped
-public class ItemBack {
+public class ItemBack implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ItemBean bean;
 	private List<ItemBean> lbean;
 	private UploadedFile uploaded;
@@ -31,8 +36,6 @@ public class ItemBack {
 
 	public void salvar() {
 		if (selecionar) {
-			bean.setImagem(new ItemDAO().buscarPorId(bean.getId(),
-					ItemBean.class).getImagem());
 			new ItemDAO().update(getBean());
 		} else {
 			new ItemDAO().insert(getBean());
@@ -52,20 +55,28 @@ public class ItemBack {
 		lbean.remove(lbean.indexOf(b));
 		new ItemDAO().delete(b);
 		limpar();
-
-	}
-
-	public void selecionar(ItemBean b) {
-		selecionar = true;
-		bean = b;
-		//Forcar renderizacao da view atualizacao dos valores
+		// Forcar renderizacao da view atualizacao dos valores
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
 		ViewHandler viewHandler = application.getViewHandler();
 		UIViewRoot viewRoot = viewHandler.createView(context, context
 				.getViewRoot().getViewId());
 		context.setViewRoot(viewRoot);
-		context.renderResponse(); 
+		context.renderResponse();
+
+	}
+
+	public void selecionar(ItemBean b) {
+		selecionar = true;
+		bean = b;
+		// Forcar renderizacao da view atualizacao dos valores
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application application = context.getApplication();
+		ViewHandler viewHandler = application.getViewHandler();
+		UIViewRoot viewRoot = viewHandler.createView(context, context
+				.getViewRoot().getViewId());
+		context.setViewRoot(viewRoot);
+		context.renderResponse();
 	}
 
 	public void limpar() {
@@ -102,6 +113,7 @@ public class ItemBack {
 				bean.setImagem(uploaded.getBytes());
 
 			} catch (IOException e) {
+
 			}
 
 			this.uploaded = uploaded;

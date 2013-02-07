@@ -4,18 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.Application;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
 
 import com.rhcloud.joacompras.core.bean.ItemBean;
 import com.rhcloud.joacompras.core.bean.ListaBean;
 import com.rhcloud.joacompras.core.bean.ListaItemBean;
 import com.rhcloud.joacompras.core.dao.ListaDAO;
 import com.rhcloud.joacompras.core.dao.ListaItemDAO;
-import com.rhcloud.joacompras.core.dao.connection.EntityManagerProvider;
 
 @ManagedBean
 @ViewScoped
@@ -41,26 +42,26 @@ public class ListaBack implements Serializable {
 	}
 
 	public void salvar() {
-			ListaDAO dao = new ListaDAO();
-			if(selecionar)
+		ListaDAO dao = new ListaDAO();
+		if (selecionar)
 			dao.update(getBean());
-			else
-		    dao.insert(getBean());
-			for (ItemBean b : remover) {
-				ListaItemBean lib = new ListaItemBean();
-				lib.setItem(b);
-				lib.setLista(getBean());
-				lib.setQuantidade(b.getTempQtd());
-				new ListaItemDAO().delete(lib);
-			}
-			for (ItemBean b : litemAd) {
-				ListaItemBean lib = new ListaItemBean();
-				lib.setItem(b);
-				lib.setLista(getBean());
-				lib.setQuantidade(b.getTempQtd());
-				if(selecionar)
+		else
+			dao.insert(getBean());
+		for (ItemBean b : remover) {
+			ListaItemBean lib = new ListaItemBean();
+			lib.setItem(b);
+			lib.setLista(getBean());
+			lib.setQuantidade(b.getTempQtd());
+			new ListaItemDAO().delete(lib);
+		}
+		for (ItemBean b : litemAd) {
+			ListaItemBean lib = new ListaItemBean();
+			lib.setItem(b);
+			lib.setLista(getBean());
+			lib.setQuantidade(b.getTempQtd());
+			if (selecionar)
 				new ListaItemDAO().update(lib);
-				else
+			else
 				new ListaItemDAO().insert(lib);
 
 		}
@@ -69,17 +70,8 @@ public class ListaBack implements Serializable {
 	}
 
 	public void excluir(ListaBean b) {
+		new ListaDAO().delete(b);
 
-		litemAd.addAll(remover);
-		for (ItemBean bi : litemAd) {
-			ListaItemBean lib = new ListaItemBean();
-			lib.setItem(bi);
-			lib.setLista(b);
-
-			lib.setLista(getBean());
-			lib.setQuantidade(bi.getTempQtd());
-			new ListaItemDAO().delete(lib);
-		}
 		limpar();
 	}
 
@@ -90,8 +82,11 @@ public class ListaBack implements Serializable {
 		setBean(new ListaBean());
 		setLbean(new ArrayList<ListaBean>());
 		lbean = new ListaDAO().listaTodos(ListaBean.class);
+		if(lbean.isEmpty())
+			setRender(false);
 		litem = new ItemBack().getLbean();
 		setLitemAd(new ArrayList<ItemBean>());
+		
 	}
 
 	public void adicionar(ItemBean b) {
@@ -109,7 +104,7 @@ public class ListaBack implements Serializable {
 
 	public void remover(ItemBean b) {
 		b.setTempQtd(b.getTempQtd() - 1);
-		if (b.getTempQtd() == 0) {
+		if (b.getTempQtd() <= 0) {
 			litemAd.remove(b);
 			remover.add(b);
 		}
@@ -119,11 +114,6 @@ public class ListaBack implements Serializable {
 		setRender(false);
 		litemAd = new ListaItemDAO().buscarItens((ListaBean) dataTable
 				.getRowData());
-	}
-
-	public void listaItens(ListaBean bean) {
-		setRender(false);
-		litemAd = new ListaItemDAO().buscarItens(bean);
 	}
 
 	public void selecionar(ListaBean b) {
@@ -161,11 +151,11 @@ public class ListaBack implements Serializable {
 
 	public void comprou() {
 		ItemBean b = (ItemBean) dataTableAd.getRowData();
-		if (litem.contains(b)) {
-			b.setTempQtd(b.getTempQtd() - 1);
-			if (b.getTempQtd() == 0) {
-				litem.remove(b);
-			}
+		if (litemAd.contains(b)) {
+//			b.setTempQtd(b.getTempQtd() - 1);
+//			if (b.getTempQtd() == 0) {
+				litemAd.remove(b);
+//			}
 		}
 	}
 
@@ -178,15 +168,7 @@ public class ListaBack implements Serializable {
 		return d;
 	}
 
-	public double getTotal() {
-		double d = 0;
-		for (ItemBean b : litem) {
-			d += (b.getTempQtd() * b.getValor());
-
-		}
-		return d;
-	}
-
+	
 	public HtmlDataTable getDataTable() {
 		return dataTable;
 	}
@@ -218,7 +200,6 @@ public class ListaBack implements Serializable {
 	public void setRender(boolean render) {
 		this.render = render;
 	}
-
 
 	public boolean isSelecionar() {
 		return selecionar;

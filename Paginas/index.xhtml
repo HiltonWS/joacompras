@@ -25,7 +25,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 	<meta charset="utf-8" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Lista de compras do Joãozinho</title>
+	<title>Lista de compras do Joãozinho</title>
 
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -73,9 +73,22 @@ xmlns="http://www.w3.org/1999/xhtml"
 			<p>
 				<h:form>
 					<script src="js/DT_bootstrap.js"></script>
-					<h:dataTable class="dataTable table table-striped table-bordered"
-						rendered="#{listaBack.isRender()}" value="#{listaBack.lbean}"
-						var="lista" binding="#{listaBack.dataTable}">
+
+					<ui:fragment rendered="#{not not empty listaBack.lbean}">
+						<h:outputText rendered="#{listaBack.isRender()}"
+							value="Não há lista. Cadastre uma lista em Cadastro de listas." />
+						<br />
+
+					</ui:fragment>
+					<ui:fragment rendered="#{not not empty listaBack.litemAd}">
+						<h:outputText rendered="#{not listaBack.isRender()}"
+							value="Todos os itens foram comprados. Clique em voltar se deseja escolher outra lista" />
+						<br />
+					</ui:fragment>
+					<h:dataTable rendered="#{listaBack.isRender()}"
+						class="dataTable table table-striped table-bordered"
+						value="#{listaBack.lbean}" var="lista"
+						binding="#{listaBack.dataTable}">
 
 						<h:column>
 							<f:facet name="header">
@@ -93,12 +106,11 @@ xmlns="http://www.w3.org/1999/xhtml"
 							<h:commandButton class="btn btn-block btn-primary"
 								data-toggle="button" action="#{listaBack.listaItens}"
 								value="Selecionar">
-								<f:ajax render="@form" />
 							</h:commandButton>
 
 						</h:column>
 					</h:dataTable>
-					<ui:fragment rendered="#{not empty listaBack.litem}">
+					<ui:fragment rendered="#{not empty listaBack.litemAd}">
 						<h:dataTable class="dataTable table table-striped table-bordered"
 							rendered="#{ not listaBack.isRender()}" cellpadding="5"
 							cellspacing="3" value="#{listaBack.litemAd}" var="item"
@@ -158,19 +170,14 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{listaBack.total}">
+								<h:outputText value="#{listaBack.totalAd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>
 						</h:panelGrid>
-					</ui:fragment>
-					<ui:fragment rendered="#{not not empty listaBack.litem}">
-						<h:outputText
-							value="Todos os itens foram comprados. Clique em voltar se deseja escolher outra lista" />
-						<br />
-					</ui:fragment>
 
-					<h:commandButton rendered="#{ not listaBack.isRender()}"
+					</ui:fragment>
+					<h:commandButton rendered="#{not listaBack.isRender()}"
 						class="btn btn-primary" data-toggle="button" action="index.xhtml"
 						value="Voltar">
 					</h:commandButton>

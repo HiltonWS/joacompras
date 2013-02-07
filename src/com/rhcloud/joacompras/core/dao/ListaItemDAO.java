@@ -30,7 +30,6 @@ public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 
 			EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 					.createEntityManager();
-
 			em.getTransaction().begin();
 			Query q = em
 					.createQuery("update ListaItemBean set quantidade = :qtd where  item = :iId  and lista = :lId");

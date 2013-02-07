@@ -1,0 +1,16 @@
+Possíveis implementações genéricas identificadas ->
+
+Componente personalizado utilizando o plugin price do jQuery
+Template para bootstrap 
+Componente personalizado para JSF 2.0 utilizando o inputFile do HTML 
+Crudel DAO melhorias para manipulação de dados genérica com objetos não gerenciados pelo Hibernate (implementação parcial).
+Componentes personalizados para utilizaçao com o bootstrap com opções.
+Componente de mensagens para utilização do layout do bootstrap com mais atributos.
+Usar plugin jQuery Datatables como componente personalizado.
+
+Ferramentas utilizadas->
+
+Hibernate/JPA
+MyFaces/JSF
+Tomahawk MyFaces (Somente para inputFile)
+Twitter bootstrap (Desing)

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!-- doctype do HTML5 -->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="pt-BR" class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lista de compras do Joãozinho</title>
+
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/DT_bootstrap.js"></script>
+<script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
+
+<link rel="stylesheet" href="../css/bootstrap.css" />
+<link rel="stylesheet" href="../css/DT_bootstrap.css" />
+<link rel="stylesheet" href="../css/jquery.dataTables.css" />
+
+</head>
+<body class="body">
+
+	<!--[if lt IE 7]>
+            <p class="chromeframe">Você está usando um brower desatualizado. <a href="http://browsehappy.com/">Atualize seu browser</a> ou <a href="http://www.google.com/chromeframe/?redirect=true">instale Google Chrome Frame</a> para melhor visualizar este site.</p>
+        <![endif]-->
+
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="#">Lista de compras do Joãzinho!</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li><a href="../index.xhtml" title="Página inicial">Home</a></li>
+						<li><a href="item.xhtml" title="">Cadastro de itens</a></li>
+						<li><a class="active" href="lista.xhtml" title="">Cadastro
+								de listas</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Corpo com 'hero-unit' -->
+	<div class="container-fluid hero">
+		              
+		<!-- Hero unit -->
+		            
+		<div class="hero-unit">
+			                
+			<h1>Cadastro de Listas</h1>
+			                <br />                 
+			<p>
+				<span class="ajaxResult" id="dateIndicator"
+					style="display: none; font-size: 60%"> <img
+					src="../images/loading.gif" /> Carregando dados do servidor...
+				</span>
+				<h:form id="form">
+
+
+					<h:outputText value="Nome: " />
+					<h:inputText value="#{listaBack.bean.nome}" />
+
+					<h2>Itens da lista</h2>
+
+					<ui:fragment rendered="#{not not empty listaBack.litemAd}">
+						<h:outputText
+							value="Não há itens na lista. Adicione um item da lista abaixo." />
+						<br />
+					</ui:fragment>
+
+					<h:panelGroup id="itens">
+						<h:dataTable rendered="#{not empty listaBack.litemAd}"
+							class="dataTable table table-striped table-border"
+							value="#{listaBack.litemAd}" var="item"
+							binding="#{listaBack.dataTableAd}">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Código" />
+								</f:facet>
+								<h:outputText value="#{item.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Imagem" />
+								</f:facet>
+								<h:graphicImage value="../imgitem?id=#{item.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Nome" />
+								</f:facet>
+								<h:outputText value="#{item.nome}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor unitário" />
+								</f:facet>
+								<h:outputText value="R$ #{item.valor}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Quantidade" />
+								</f:facet>
+								<h:outputText value="#{item.tempQtd}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor" />
+								</f:facet>
+								<h:outputText value="R$ #{item.valor * item.tempQtd}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value=" " />
+								</f:facet>
+								<h:commandLink class="btn btn-primary btn-block"
+									action="#{listaBack.remover(item)}">
+									<f:ajax event="click" render="form:itens" />
+									<i class="icon-remove icon-white" />
+									Remover
+								</h:commandLink>
+							</h:column>
+						</h:dataTable>
+
+						<h:panelGrid rendered="#{not not empty listaBack.litemAd}"
+							column="1">
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor" />
+								</f:facet>
+								<h:outputText value="R$ #{listaBack.totalAd}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+						</h:panelGrid>
+
+						<h2>Adicionar à lista</h2>
+						<ui:fragment rendered="#{not not empty listaBack.litem}">
+							<h:outputText
+								value="Não há itens na lista. Salve um item pelo Cadastro de itens." />
+							<br />
+						</ui:fragment>
+						<h:dataTable rendered="#{not empty listaBack.litem}"
+							class="dataTable table table-striped table-bordered"
+							value="#{listaBack.litem}" var="item"
+							binding="#{listaBack.dataTable}">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Código" />
+								</f:facet>
+								<h:outputText value="#{item.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Imagem" />
+								</f:facet>
+								<h:graphicImage value="../imgitem?id=#{item.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Nome" />
+								</f:facet>
+								<h:outputText value="#{item.nome}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor unitário" />
+								</f:facet>
+								<h:outputText value="R$ #{item.valor}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value=" " />
+								</f:facet>
+
+								<h:commandLink class="btn btn-primary btn-block"
+									data-toggle="button" action="#{listaBack.adicionar(item)}">
+									<f:ajax event="click" render="form:itens" />
+									<i class="icon-check icon-white" />
+									Adicionar
+								</h:commandLink>
+							</h:column>
+
+						</h:dataTable>
+						<ui:fragment rendered="#{not not empty listaBack.litemAd}">
+							<h:outputText
+								value="Não há lista. Preencha os dados acima e adicione um item." />
+							<br />
+						</ui:fragment>
+
+						<h:dataTable rendered="#{not empty listaBack.lbean}"
+							class="dataTable table table-striped table-bordered"
+							value="#{listaBack.lbean}" var="lista">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Código" />
+								</f:facet>
+								<h:outputText value="#{lista.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Nome" />
+								</f:facet>
+								<h:outputText value="#{lista.nome}" />
+							</h:column>
+							<h:column>
+								<h:commandLink class="btn btn-block btn-warning"
+									action="#{listaBack.selecionar(lista)}">
+									<i class="icon-check icon-white"></i>
+									Alterar
+									<f:ajax event="click" render="@form" />
+								</h:commandLink>
+								<h:column>
+									<h:commandLink class="btn btn-block btn-danger"
+										action="#{listaBack.excluir(lista)}">
+										<i class="icon-remove icon-white"></i>
+										Excluir
+										<f:ajax event="click" render="@form" />
+									</h:commandLink>
+								</h:column>
+
+							</h:column>
+						</h:dataTable>
+					</h:panelGroup>
+					<br />
+
+					<h:commandLink class="btn btn-success" action="#{listaBack.salvar}">
+						<i class="icon-ok  icon-white"></i>
+						Salvar
+						<f:ajax render="@form" execute="@form" />
+					</h:commandLink>
+
+				</h:form>
+			</p>
+			            
+		</div>
+
+	</div>
+	<!-- /container hero -->
+
+</body>
+
+
+
+</html>

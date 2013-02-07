@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!-- doctype do HTML5 -->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	mlns:t="http://myfaces.apache.org/tomahawk"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	mlns:t="http://myfaces.apache.org/tomahawk""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	mlns:t="http://myfaces.apache.org/tomahawk"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="pt_BR" class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<!--<![endif]-->
+<h:head>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>Lista de compras do Joãozinho</title>
+
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/jquery.dataTables.min.js"></script>
+	<script src="../js/DT_bootstrap.js"></script>
+	<script src="../js/jquery.price_format.1.7.min.js"></script>
+	<script src="../js/price.js"></script>
+	<script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
+
+	<link rel="stylesheet" href="../css/bootstrap.css" />
+	<link rel="stylesheet" href="../css/bootstrap-responsive.css" />
+	<link rel="stylesheet" href="../css/jquery.dataTables.css" />
+	<link rel="stylesheet" href="../css/DT_bootstrap.css" />
+</h:head>
+<body>
+
+	<!--[if lt IE 7]>
+            <p class="chromeframe">Você está usando um brower desatualizado. <a href="http://browsehappy.com/">Atualize seu browser</a> ou <a href="http://www.google.com/chromeframe/?redirect=true">instale Google Chrome Frame</a> para melhor visualizar este site.</p>
+        <![endif]-->
+
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="#">Lista de compras do Joãzinho!</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li><a href="../index.xhtml" title="Página inicial">Home</a></li>
+						<li class="active"><a href=" item.xhtml" title="">Cadastro
+								de itens</a></li>
+						<li><a href="lista.xhtml" title="">Cadastro de listas</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Corpo com 'hero-unit' -->
+	<f:view locale="pt_BR">
+		<div class="container-fluid hero">
+			              
+			<!-- Hero unit -->
+			            
+
+			<div class="hero-unit">
+				                
+				<h:panelGrid
+					rendered="#{not empty requestScope['org.apache.myfaces.custom.fileupload.exception']}">
+					<div class="alert alert-block alert-error">
+						<button type="button" class="close" data-dismiss="alert">x</button>
+						<h4>Falha ao enviar o arquivo!</h4>
+						Verifique se o tamanho do arquivo não é maior que 50KB!  
+					</div>
+				</h:panelGrid>
+
+				<h1>Cadastro de Itens</h1>
+				                <br />
+				<h:messages errorClass="alert alert-error"
+					infoClass="alert alert-info" warnClass="alert" />
+				<h:panelGrid columns="2">   
+
+					<h:form class="form-horizontal" id="form"
+						enctype="multipart/form-data">
+
+						<h:inputHidden value="#{itemBack.bean.id}" />
+						<h:panelGroup class="control-group">
+							<h:outputLabel class="control-label" value="Nome" />
+							<div class="controls">
+								<h:inputText required="true"
+									requiredMessage="Campo nome obrigatório!"
+									value="#{itemBack.bean.nome}" />
+							</div>
+							<h:outputLabel class="control-label" value="Valor" />
+							<div class="controls">
+								<div class="input-prepend">
+									<span class="add-on">R$</span>
+									<h:inputText required="true"
+										requiredMessage="Campo valor obrigatório!" style="width:90%"
+										class="price" value="#{itemBack.bean.valor}">
+										<f:convertNumber type="currency" pattern="#,#0.00" />
+									</h:inputText>
+								</div>
+							</div>
+							<h:outputLabel class="control-label" value="Imagem" />
+							<div class="controls">
+								<t:inputFileUpload accept="image/*" id="fileupload"
+									value="#{itemBack.uploaded}" />
+							</div>
+						</h:panelGroup>
+						<br />
+						<h:panelGroup rendered="#{not empty itemBack.lbean}"
+							class="control-group">
+							<h:dataTable
+								class="_dataTable table table-striped table-bordered"
+								value="#{itemBack.lbean}" var="item">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Código" />
+									</f:facet>
+									<h:outputText value="#{item.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Imagem" />
+									</f:facet>
+									<h:graphicImage value="../imgitem?id=#{item.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Nome" />
+									</f:facet>
+									<h:outputText value="#{item.nome}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Valor unitário" />
+									</f:facet>
+									<h:outputText value="R$ #{item.valor}">
+										<f:convertNumber type="currency" pattern="#,#0.00" />
+									</h:outputText>
+								</h:column>
+								<h:column>
+									<h:commandLink immediate = "true" class="btn btn-warning btn-block"
+										action="#{itemBack.selecionar(item)}">
+										<i class="icon-check icon-white"></i>
+										Alterar
+									</h:commandLink>
+								</h:column>
+								<h:column>
+									<h:commandLink immediate="true" class="btn btn-danger btn-block"
+										action="#{itemBack.excluir(item)}">
+										<i class="icon-remove icon-white"></i> 
+								Excluir
+							</h:commandLink>
+								</h:column>
+
+							</h:dataTable>
+						</h:panelGroup>
+						<ui:fragment rendered="#{not not empty itemBack.lbean}">
+							<h:outputText
+								value="Não há itens. Preencha os dados e clique em salvar" />
+							<br />
+						</ui:fragment>
+						<h:panelGroup id="botoes" class="control-group">
+							<h:commandLink class="btn btn-success"
+								action="#{itemBack.salvar()}">
+								<i class="icon-ok icon-white"></i> 
+								Salvar
+							</h:commandLink>
+
+						</h:panelGroup>
+					</h:form>
+				</h:panelGrid>
+			</div>
+		</div>
+	</f:view>
+	<!-- /container hero -->
+
+</body>
+
+</html>

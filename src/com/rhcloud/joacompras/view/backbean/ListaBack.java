@@ -64,7 +64,7 @@ public class ListaBack implements Serializable {
 			if (selecionar)
 				new ListaItemDAO().update(lib);
 			else
-				new ListaItemDAO().insert(lib);
+				new ListaItemDAO().insert(false, lib);
 
 		}
 		limpar();

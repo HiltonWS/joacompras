@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- doctype do HTML5 -->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="pt-BR" class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<!--<![endif]-->
+<h:head>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Lista de compras do Joãozinho</title>
+
+	<script src="js/jquery-latest.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/jquery.dataTables.js"></script>
+	<script src="js/modernizr-latest.js"></script>
+
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/jquery.dataTables.css" />
+	<link rel="stylesheet" href="css/DT_bootstrap.css" />
+</h:head>
+<body>
+
+	<!--[if lt IE 7]>
+            <p>Você está usando um browser desatualizado. <a href="http://browsehappy.com/">Atualize seu browser</a> ou <a href="http://www.google.com/chromeframe/?redirect=true">instale Google Chrome Frame</a> para melhor visualizar este site.</p>
+        <![endif]-->
+
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="#">Lista de compras do Joãzinho!</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="active"><a href="index.xhtml"
+							title="Página inicial">Home</a></li>
+						<li><a href="cad/item.xhtml" title="">Cadastro de itens</a></li>
+						<li><a href="cad/lista.xhtml" title="">Cadastro de listas</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Corpo com 'hero-unit' -->
+	<div class="container-fluid hero">
+		              
+		<!-- Hero unit -->
+		            
+		<div class="hero-unit">
+			                
+			<h1>Listas</h1>
+			                <br />                 
+			<p>
+				<h:form>
+					<script src="js/DT_bootstrap.js"></script>
+
+					<ui:fragment rendered="#{not not empty listaBack.lbean}">
+						<h:outputText rendered="#{listaBack.isRender()}"
+							value="Não há lista. Cadastre uma lista em Cadastro de listas." />
+						<br />
+
+					</ui:fragment>
+					<ui:fragment rendered="#{not not empty listaBack.litemAd}">
+						<h:outputText rendered="#{not listaBack.isRender()}"
+							value="Todos os itens foram comprados. Clique em voltar se deseja escolher outra lista" />
+						<br />
+					</ui:fragment>
+					<h:dataTable rendered="#{listaBack.isRender()}"
+						class="dataTable table table-striped table-bordered"
+						value="#{listaBack.lbean}" var="lista"
+						binding="#{listaBack.dataTable}">
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Código" />
+							</f:facet>
+							<h:outputText value="#{lista.id}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Nome" />
+							</f:facet>
+							<h:outputText value="#{lista.nome}" />
+						</h:column>
+						<h:column>
+							<h:commandButton class="btn btn-block btn-primary"
+								data-toggle="button" action="#{listaBack.listaItens}"
+								value="Selecionar">
+							</h:commandButton>
+
+						</h:column>
+					</h:dataTable>
+					<ui:fragment rendered="#{not empty listaBack.litemAd}">
+						<h:dataTable class="dataTable table table-striped table-bordered"
+							rendered="#{ not listaBack.isRender()}" cellpadding="5"
+							cellspacing="3" value="#{listaBack.litemAd}" var="item"
+							binding="#{listaBack.dataTableAd}">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Código" />
+								</f:facet>
+								<h:outputText value="#{item.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Imagem" />
+								</f:facet>
+								<h:graphicImage value="imgitem?id=#{item.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Nome" />
+								</f:facet>
+								<h:outputText value="#{item.nome}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor unitário" />
+								</f:facet>
+								<h:outputText value="#{item.valor}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Quantidade" />
+								</f:facet>
+								<h:outputText value="#{item.tempQtd}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor" />
+								</f:facet>
+								<h:outputText value="#{item.valor * item.tempQtd}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value=" " />
+								</f:facet>
+								<h:commandButton class="btn btn-primary" data-toggle="button"
+									action="#{listaBack.comprou}" value="Comprou">
+									<f:ajax render="@form" />
+								</h:commandButton>
+							</h:column>
+						</h:dataTable>
+						<h:panelGrid rendered="#{ not listaBack.isRender()}" column="1">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Valor" />
+								</f:facet>
+								<h:outputText value="#{listaBack.totalAd}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</h:column>
+						</h:panelGrid>
+
+					</ui:fragment>
+					<h:commandButton rendered="#{not listaBack.isRender()}"
+						class="btn btn-primary" data-toggle="button" action="index.xhtml"
+						value="Voltar">
+					</h:commandButton>
+				</h:form>
+			</p>
+			            
+		</div>
+
+	</div>
+	<!-- /container hero -->
+
+</body>
+
+
+
+
+</html>

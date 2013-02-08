@@ -44,7 +44,7 @@ public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 			em.close();
 			//new Messages().addInfo("Salvo com sucesso!");
 		} catch (Exception y) {
-			//new Messages().addError("Erro o salvar!");
+			new Messages().addError("Erro o salvar!");
 		}
 	}
 

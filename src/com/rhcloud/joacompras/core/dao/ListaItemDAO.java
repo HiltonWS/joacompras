@@ -42,9 +42,9 @@ public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 			em.getTransaction().commit();
 
 			em.close();
-			new Messages().addInfo("Salvo com sucesso!");
+			//new Messages().addInfo("Salvo com sucesso!");
 		} catch (Exception y) {
-			new Messages().addError("Erro o salvar!");
+			//new Messages().addError("Erro o salvar!");
 		}
 	}
 

@@ -151,7 +151,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{item.valor * item.tempQtd}">
+								<h:outputText value="R$ #{item.valor * item.tempQtd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>
@@ -170,7 +170,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{listaBack.totalAd}">
+								<h:outputText value="R$ #{listaBack.totalAd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>

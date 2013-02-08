@@ -30,6 +30,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 	<script src="js/jquery-latest.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/jquery.dataTables.js"></script>
+	<script src="js/modernizr-latest.js"></script>
 
 	<link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="css/jquery.dataTables.css" />
@@ -150,7 +151,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{item.valor * item.tempQtd}">
+								<h:outputText value="R$ #{item.valor * item.tempQtd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>
@@ -169,7 +170,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{listaBack.totalAd}">
+								<h:outputText value="R$ #{listaBack.totalAd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>

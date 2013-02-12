@@ -24,16 +24,24 @@ public class ItemDAO extends CrudDAO<ItemBean>{
 			EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 					.createEntityManager();
 			em.getTransaction().begin();
-
+			Query q = em.createQuery("from ListaItemBean where item =  :i");
+			q.setParameter("i",  e[0]);		
+			if (q.getResultList().size() >0) {
+				em.close();
+				new Messages().addError("Exclua o item da(s) Lista(s) primeiro!");
+				
+			}else{
 			StringBuilder s = new StringBuilder();
 			s.append("DELETE ItemBean");
 			s.append(" WHERE id =" + e[0].getId());
 
-			Query q = em.createQuery(s.toString());
+			q = em.createQuery(s.toString());
 			q.executeUpdate();
 			em.getTransaction().commit();
 			em.close();
+			
 			new Messages().addInfo("Deletado com sucesso!");
+		}
 		} catch (Exception y) {
 			new Messages().addError("Erro ao deletar!");
 		}

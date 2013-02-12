@@ -61,7 +61,7 @@ public class ListaBack implements Serializable {
 			lib.setItem(b);
 			lib.setLista(getBean());
 			lib.setQuantidade(b.getTempQtd());
-			if (selecionar)
+			if (selecionar && new ListaItemDAO().buscarItens(getBean()).size() >0)
 				new ListaItemDAO().update(lib);
 			else
 				new ListaItemDAO().insert(false, lib);
@@ -76,9 +76,14 @@ public class ListaBack implements Serializable {
 	 * @param b lista recebida pela pagina
 	 */
 	public void excluir(ListaBean b) {
-		new ListaDAO().delete(b);
-		new ListaItemDAO().delete(b);
 		
+		for(ItemBean bi: new ListaItemDAO().buscarItens(b)){
+			ListaItemBean be = new ListaItemBean();
+			be.setItem(bi);
+			be.setLista(b);
+			new ListaItemDAO().delete(be);
+		}
+		new ListaDAO().delete(b);
         
 		limpar();
 	}

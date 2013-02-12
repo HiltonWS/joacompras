@@ -15,19 +15,21 @@ import com.rhcloud.joacompras.core.dao.connection.EntityManagerProvider;
 import com.rhcloud.joacompras.core.dao.crud.CrudDAO;
 import com.rhcloud.joacompras.core.util.Messages;
 
-
 /**
  * @author Hilton Wichwski Silva
- *
+ * 
  */
 public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 
-	/* (non-Javadoc)
-	 * @see com.rhcloud.joacompras.core.dao.crud.CrudDAO#update(java.lang.Object[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.rhcloud.joacompras.core.dao.crud.CrudDAO#update(java.lang.Object[])
 	 */
 	public void update(ListaItemBean... e) {
 		try {
-
+			// Verficar se lista Existe
 			EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 					.createEntityManager();
 			em.getTransaction().begin();
@@ -38,27 +40,31 @@ public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 			q.setParameter("qtd", e[0].getQuantidade());
 			em.merge(e[0].getLista());
 			q.executeUpdate();
-			
+
 			em.getTransaction().commit();
 
 			em.close();
-			//new Messages().addInfo("Salvo com sucesso!");
+			// new Messages().addInfo("Salvo com sucesso!");
 		} catch (Exception y) {
 			new Messages().addError("Erro o salvar!");
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.rhcloud.joacompras.core.dao.crud.CrudDAO#delete(java.lang.Object[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.rhcloud.joacompras.core.dao.crud.CrudDAO#delete(java.lang.Object[])
 	 */
-	public void delete(ListaBean... e) {
+	public void delete(ListaItemBean... e) {
 		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();
 
 		em.getTransaction().begin();
 		Query q = em
-				.createQuery("delete ListaItemBean where  lista = :lId");
-		q.setParameter("lId", e[0]);
+				.createQuery("delete ListaItemBean where  lista = :lId and item =:iId");
+		q.setParameter("lId", e[0].getLista());
+		q.setParameter("iId", e[0].getItem());
 		q.executeUpdate();
 
 		em.getTransaction().commit();
@@ -68,7 +74,9 @@ public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 
 	/**
 	 * Busca os itens da lista relacionada
-	 * @param bean a lista relacionada
+	 * 
+	 * @param bean
+	 *            a lista relacionada
 	 * @return uma lista com os itens contidos na "ListaBean" relacionada
 	 */
 	public List<ItemBean> buscarItens(ListaBean bean) {

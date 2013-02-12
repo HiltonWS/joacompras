@@ -51,15 +51,14 @@ public class ListaItemDAO extends CrudDAO<ListaItemBean> {
 	/* (non-Javadoc)
 	 * @see com.rhcloud.joacompras.core.dao.crud.CrudDAO#delete(java.lang.Object[])
 	 */
-	public void delete(ListaItemBean... e) {
+	public void delete(ListaBean... e) {
 		EntityManager em = EntityManagerProvider.getEntityManagerFactory()
 				.createEntityManager();
 
 		em.getTransaction().begin();
 		Query q = em
-				.createQuery("delete ListaItemBean where  item = :iId  and lista = :lId");
-		q.setParameter("iId", e[0].getItem());
-		q.setParameter("lId", e[0].getLista());
+				.createQuery("delete ListaItemBean where  lista = :lId");
+		q.setParameter("lId", e[0]);
 		q.executeUpdate();
 
 		em.getTransaction().commit();

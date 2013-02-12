@@ -77,7 +77,9 @@ public class ListaBack implements Serializable {
 	 */
 	public void excluir(ListaBean b) {
 		new ListaDAO().delete(b);
-
+		new ListaItemDAO().delete(b);
+		
+        
 		limpar();
 	}
 

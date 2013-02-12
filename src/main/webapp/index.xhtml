@@ -27,10 +27,10 @@ xmlns="http://www.w3.org/1999/xhtml"
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Lista de compras do Joãozinho</title>
 
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.dataTables.min.js"></script>
-	<script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
+	<script src="js/jquery-latest.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/jquery.dataTables.js"></script>
+	<script src="js/modernizr-latest.js"></script>
 
 	<link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="css/jquery.dataTables.css" />
@@ -137,7 +137,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor unitário" />
 								</f:facet>
-								<h:outputText value="#{item.valor}">
+								<h:outputText value="R$ #{item.valor}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>
@@ -151,7 +151,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{item.valor * item.tempQtd}">
+								<h:outputText value="R$ #{item.valor * item.tempQtd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>
@@ -170,7 +170,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<f:facet name="header">
 									<h:outputText value="Valor" />
 								</f:facet>
-								<h:outputText value="#{listaBack.totalAd}">
+								<h:outputText value="R$ #{listaBack.totalAd}">
 									<f:convertNumber type="currency" />
 								</h:outputText>
 							</h:column>
